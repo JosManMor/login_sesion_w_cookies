@@ -7,12 +7,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     await AuthRequest.validateSession();
   } catch {
-    window.location.href = '../views/index.html';
+    window.location.href = './index.html';
   }
 });
 
 btnLogout.addEventListener('click', async () => {
   const data = await AuthRequest.logout();
   message.innerHTML = data.message;
-  setTimeout(() => (window.location.href = '../views/index.html'), 1000);
+  setTimeout(() => (window.location.href = './index.html'), 1000);
 });

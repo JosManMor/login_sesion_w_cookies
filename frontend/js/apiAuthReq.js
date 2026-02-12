@@ -16,10 +16,13 @@ class AuthRequest {
         'Content-type': 'application/json; charset=UTF-8',
       },
     });
-    const data = await response.json();
     if (!response.ok || response.status === 401) {
+      const data = await response
+        .json()
+        .catch(() => ({ message: 'Login failed' }));
       throw data;
     }
+    const data = await response.json();
     return data;
   };
 
@@ -27,10 +30,11 @@ class AuthRequest {
     const response = await fetch(this.baseUrl + '/validate', {
       credentials: 'include',
     });
-    const data = await response.json();
     if (!response.ok || response.status === 401) {
+      const data = await response.json().catch(() => ({ valid: false }));
       throw data;
     }
+    const data = await response.json();
     return data;
   };
 
@@ -39,10 +43,13 @@ class AuthRequest {
       method: 'POST',
       credentials: 'include',
     });
-    const data = await response.json();
     if (!response.ok) {
+      const data = await response
+        .json()
+        .catch(() => ({ message: 'Logout failed' }));
       throw data;
     }
+    const data = await response.json();
     return data;
   };
 
@@ -58,12 +65,15 @@ class AuthRequest {
         'Content-type': 'application/json; charset=UTF-8',
       },
     });
-    const data = await response.json();
     if (!response.ok) {
+      const data = await response
+        .json()
+        .catch(() => ({ message: 'Signup failed' }));
       throw data;
     }
+    const data = await response.json();
     return data;
   };
 }
-const authRequest = new AuthRequest('192.168.50.167', 3002);
-export default authRequest 
+const authRequest = new AuthRequest();
+export default authRequest;

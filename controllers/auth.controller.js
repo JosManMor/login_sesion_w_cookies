@@ -20,22 +20,23 @@ const loginUser = async (req, res) => {
     res
       .cookie('access_token', token, {
         httpOnly: true,
-        sameSite: 'Strict',
+        sameSite: 'lax',
+        secure: false,
         maxAge: 1000 * 60 * 60,
       })
-      .send({ user });
+      .json({ user });
   } catch (error) {
-    res.status(401).send(error.message);
+    res.status(401).json({ message: error.message });
   }
 };
 
 const registerUser = async (req, res) => {
-  const {  username, password } = req.body;
+  const { username, password } = req.body;
   try {
     const id = await UserRepository.create({ username, password });
-    res.send({ id });
+    res.json({ id });
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -43,15 +44,8 @@ const logoutUser = (req, res) => {
   res.clearCookie('access_token').json({ message: 'logout succesfull' });
 };
 
-
 const validateSession = (req, res) => {
-    return res.status(200).json({ valid: true, user: req.session.user });
+  return res.status(200).json({ valid: true, user: req.session.user });
 };
 
-export {
-  getHomePage,
-  loginUser,
-  registerUser,
-  logoutUser,
-  validateSession,
-};
+export { getHomePage, loginUser, registerUser, logoutUser, validateSession };
