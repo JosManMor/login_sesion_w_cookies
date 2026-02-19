@@ -4,9 +4,9 @@ import {
   loginUser,
   registerUser,
   logoutUser,
-   validateSession,
+  validateSession,
+  getAllUsers,
 } from '../controllers/auth.controller.js';
-import { verifyCookie } from '../middleware/verifyCookie.js';
 
 const router = express.Router();
 
@@ -15,6 +15,7 @@ router.post('/signup', registerUser);
 router.post('/logout', logoutUser); 
 router.get('/', getHomePage);
 
-router.get('/validate',verifyCookie, validateSession);
+router.get('/validate', validateSession);
+router.get('/users', getAllUsers);
 
 export default router;

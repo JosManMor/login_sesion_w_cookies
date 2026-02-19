@@ -1,5 +1,5 @@
 class AuthRequest {
-  constructor(ip = '127.0.0.1', port = 3000) {
+  constructor(ip = 'localhost', port = 3000) {
     this.ip = ip;
     this.port = port;
     this.baseUrl = `http://${this.ip}:${port}/auth`;
@@ -47,6 +47,21 @@ class AuthRequest {
       const data = await response
         .json()
         .catch(() => ({ message: 'Logout failed' }));
+      throw data;
+    }
+    const data = await response.json();
+    return data;
+  };
+
+  getAllUsers = async () => {
+    const response = await fetch(this.baseUrl + '/users', {
+      method: 'GET',
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      const data = await response
+        .json()
+        .catch(() => ({ message: 'Failed to fetch users' }));
       throw data;
     }
     const data = await response.json();

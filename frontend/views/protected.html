@@ -3,12 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Dashboard | Protected</title>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/admin.css">
   </head>
   <body>
-    <h1>Protected</h1>
-    <button id="btnLogout">logout</button>
-    <span id="message"></span>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="logo">
+                <i class="ph ph-shield-check"></i>
+                <h2>SecureApp</h2>
+            </div>
+            <button id="btnLogout" class="btn btn-secondary">
+                <i class="ph ph-sign-out"></i> Logout
+            </button>
+        </header>
+        
+        <main class="dashboard-content">
+            <h1>Welcome Back!</h1>
+            <div class="card info-card">
+                <div class="user-avatar">
+                   <i class="ph ph-user-circle"></i>
+                </div>
+                <span id="message">Loading user data...</span>
+            </div>
+
+            <!-- Admin Panel Section (Hidden by default) -->
+            <div id="admin-panel" class="card admin-card" style="display: none; margin-top: 2rem;">
+              <h2><i class="ph ph-users-three"></i> User Management</h2>
+              <div class="table-container">
+                <table id="users-table" class="data-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Users will be populated here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </main>
+    </div>
+    
     <script type="module" src="../js/protected.js"></script>
   </body>
 </html> 
