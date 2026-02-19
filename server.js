@@ -1,8 +1,9 @@
 import express from 'express';
-import { PORT, IP, CORS_ORIGIN } from './config.js';
+import { PORT, IP, CORS_ORIGIN, SESSION_SECRET } from './config.js';
 import bodyParser from 'body-parser';
 import { bodyErrorHandling } from './middleware/bodyErrorHandling.js';
 import cookieParser from 'cookie-parser';
+import session from 'express-session';
 import authRoutes from './routes/auth.routes.js';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -23,6 +24,18 @@ app.use(
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(
+  session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Set to true if using HTTPS
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60, // 1 hour
+    },
+  })
+);
 app.use(express.static(path.join(__dirname, 'frontend')));
 
 app.get('/', (req, res) => {

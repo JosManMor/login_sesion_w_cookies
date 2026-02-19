@@ -9,22 +9,27 @@ const User = Schema('User', {
   _id: { type: String, required: true },
   username: { type: String, required: true },
   password: { type: String, required: true },
+  role: { type: String, required: true, default: 'user' },
 });
 
 export class UserRepository {
-  static async create({ username, password }) {
+  static async create({ username, password, role = 'user' }) {
     userSchema.parse({ username, password });
     const user = User.findOne({ username });
     if (user) throw new Error('{"message":"Username already exists"}');
     const id = randomUUID();
-    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS); // Password hashed
     User.create({
       _id: id,
       username,
       password: hashedPassword,
+      role,
     }).save();
     return id;
+  }
+
+  static async getAll() {
+    return User.find();
   }
 
   static async login({ username, password }) {

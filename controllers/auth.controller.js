@@ -1,6 +1,4 @@
 import { UserRepository } from '../models/user.repository.js';
-import { SECRET_JWT_KEY } from '../config.js';
-import jwt from 'jsonwebtoken';
 
 const getHomePage = (req, res) => {
   return res.sendFile(process.cwd() + '/frontend/views/index.html');
@@ -10,21 +8,11 @@ const loginUser = async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await UserRepository.login({ username, password });
-    const token = jwt.sign(
-      { id: user._id, username: user.username },
-      SECRET_JWT_KEY,
-      {
-        expiresIn: '1h',
-      }
-    );
-    res
-      .cookie('access_token', token, {
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: false,
-        maxAge: 1000 * 60 * 60,
-      })
-      .json({ user });
+    req.session.user = user;
+    req.session.save((err) => {
+      if (err) throw err;
+      res.json({ message: 'Login successful', user });
+    });
   } catch (error) {
     res.status(401).json({ message: error.message });
   }
@@ -41,11 +29,30 @@ const registerUser = async (req, res) => {
 };
 
 const logoutUser = (req, res) => {
-  res.clearCookie('access_token').json({ message: 'logout succesfull' });
+  req.session.destroy((err) => {
+    if (err) return res.status(500).json({ message: 'Could not log out' });
+    res.clearCookie('connect.sid'); // Default session cookie name
+    res.json({ message: 'logout succesfull' });
+  });
 };
 
 const validateSession = (req, res) => {
-  return res.status(200).json({ valid: true, user: req.session.user });
+  if (req.session.user) {
+    return res.status(200).json({ valid: true, user: req.session.user });
+  }
+  return res.status(401).json({ valid: false });
 };
 
-export { getHomePage, loginUser, registerUser, logoutUser, validateSession };
+const getAllUsers = async (req, res) => {
+  try {
+    if (!req.session.user || req.session.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Access denied: Admins only' });
+    }
+    const users = await UserRepository.getAll();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export { getHomePage, loginUser, registerUser, logoutUser, validateSession, getAllUsers };
