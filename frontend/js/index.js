@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     const data = await AuthRequest.validateSession();
     if (data.valid) {
-      window.location.href = './protected.html';
+      window.location.href = '/protected';
     }
   } catch (error) {
     console.error(error.message);
@@ -44,7 +44,7 @@ function attachSubmitEvent() {
       span.textContent = 'Sign up succesfull';
       AuthRequest.loginUser({ username, password });
       setTimeout(
-        () => (window.location.href = './protected.html'),
+        () => (window.location.href = '/protected'),
         2000
       );
     } catch (error) {
@@ -76,7 +76,7 @@ document.getElementById('login').addEventListener('submit', async (e) => {
   try {
     const response = await AuthRequest.loginUser({ username, password });
     console.log('Login successful:', response);
-    window.location.href = './protected.html';
+    window.location.href = '/protected';
   } catch (error) {
     console.error('Login error:', error);
     error.message ? alert(error.message) : alert(JSON.stringify(error));

@@ -29,7 +29,10 @@ export class UserRepository {
   }
 
   static async getAll() {
-    return User.find();
+    return User.find().map(user => {
+      const { password, ...publicUser } = user;
+      return publicUser;
+    });
   }
 
   static async login({ username, password }) {

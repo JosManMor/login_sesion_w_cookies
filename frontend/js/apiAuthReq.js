@@ -53,6 +53,21 @@ class AuthRequest {
     return data;
   };
 
+  getAllUsers = async () => {
+    const response = await fetch(this.baseUrl + '/users', {
+      method: 'GET',
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      const data = await response
+        .json()
+        .catch(() => ({ message: 'Failed to fetch users' }));
+      throw data;
+    }
+    const data = await response.json();
+    return data;
+  };
+
   signup = async ({ username, password }) => {
     const response = await fetch(this.baseUrl + '/signup', {
       method: 'POST',

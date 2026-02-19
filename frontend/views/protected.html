@@ -7,6 +7,7 @@
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/admin.css">
   </head>
   <body>
     <div class="dashboard-container">
@@ -27,6 +28,25 @@
                    <i class="ph ph-user-circle"></i>
                 </div>
                 <span id="message">Loading user data...</span>
+            </div>
+
+            <!-- Admin Panel Section (Hidden by default) -->
+            <div id="admin-panel" class="card admin-card" style="display: none; margin-top: 2rem;">
+              <h2><i class="ph ph-users-three"></i> User Management</h2>
+              <div class="table-container">
+                <table id="users-table" class="data-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Users will be populated here -->
+                  </tbody>
+                </table>
+              </div>
             </div>
         </main>
     </div>
