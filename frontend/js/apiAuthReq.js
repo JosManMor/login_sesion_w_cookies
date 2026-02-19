@@ -1,5 +1,5 @@
 class AuthRequest {
-  constructor(ip = '127.0.0.1', port = 3000) {
+  constructor(ip = 'localhost', port = 3000) {
     this.ip = ip;
     this.port = port;
     this.baseUrl = `http://${this.ip}:${port}/auth`;

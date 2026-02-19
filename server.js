@@ -6,6 +6,11 @@ import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.routes.js';
 import morgan from 'morgan';
 import cors from 'cors';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(morgan('dev'));
@@ -18,6 +23,16 @@ app.use(
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'frontend')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'views', 'index.html'));
+});
+
+app.get('/protected', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'views', 'protected.html'));
+});
+
 app.use('/auth',authRoutes);
 app.use(bodyErrorHandling);
 

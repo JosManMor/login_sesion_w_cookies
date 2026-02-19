@@ -3,7 +3,7 @@ import { SECRET_JWT_KEY } from '../config.js';
 import jwt from 'jsonwebtoken';
 
 const getHomePage = (req, res) => {
-  return res.sendFile(process.cwd() + '/views/index.html');
+  return res.sendFile(process.cwd() + '/frontend/views/index.html');
 };
 
 const loginUser = async (req, res) => {
