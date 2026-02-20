@@ -39,10 +39,10 @@ export class UserRepository {
     userSchema.parse({ username, password });
 
     const user = User.findOne({ username });
-    if (!user) throw new Error('{"message":"Username does not exist"}');
+    if (!user) throw new Error('{"message":"Username or password is incorrect"}');
 
     const isValid = await bcrypt.compare(password, user.password);
-    if (!isValid) throw new Error('{"message":"Password is incorrect"}');
+    if (!isValid) throw new Error('{"message":"Username or password is incorrect"}');
 
     const { password: _, ...publicUser } = user;
     return publicUser;
